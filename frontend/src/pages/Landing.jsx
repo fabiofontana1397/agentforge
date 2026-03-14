@@ -104,42 +104,54 @@ const DemoMockup = memo(function DemoMockup() {
     { role: 'bot', text: '30g di noci o mandorle, oppure yogurt senza glutine con miele. Controlla sempre l\'etichetta! ✅' },
   ]
 
-  useEffect(() => {
-    let cancelled = false
-    async function runDemo() {
-      while (!cancelled) {
-        setUploadedFiles([])
-        setChatMessages([])
-        setTyping(false)
-        for (let i = 0; i < files.length; i++) {
-          if (cancelled) return
-          await new Promise(r => setTimeout(r, 800))
-          setUploadedFiles(prev => [...prev, files[i]])
-        }
-        await new Promise(r => setTimeout(r, 600))
-        for (let i = 0; i < conversation.length; i++) {
-          if (cancelled) return
-          const msg = conversation[i]
-          if (msg.role === 'bot') {
-            setTyping(true)
-            await new Promise(r => setTimeout(r, 1500))
-            if (cancelled) return
-            setTyping(false)
-            setChatMessages(prev => [...prev, msg])
-          } else {
-            setChatMessages(prev => [...prev, msg])
-          }
-          await new Promise(r => setTimeout(r, 1000))
-        }
-        await new Promise(r => setTimeout(r, 4000))
+  const demoRef = useRef(null)
+const [isVisible, setIsVisible] = useState(false)
+
+useEffect(() => {
+  const obs = new IntersectionObserver(([e]) => {
+    setIsVisible(e.isIntersecting)
+  }, { threshold: 0.3 })
+  if (demoRef.current) obs.observe(demoRef.current)
+  return () => obs.disconnect()
+}, [])
+
+useEffect(() => {
+  if (!isVisible) return
+  let cancelled = false
+  async function runDemo() {
+    while (!cancelled) {
+      setUploadedFiles([])
+      setChatMessages([])
+      setTyping(false)
+      for (let i = 0; i < files.length; i++) {
+        if (cancelled) return
+        await new Promise(r => setTimeout(r, 800))
+        setUploadedFiles(prev => [...prev, files[i]])
       }
+      await new Promise(r => setTimeout(r, 600))
+      for (let i = 0; i < conversation.length; i++) {
+        if (cancelled) return
+        const msg = conversation[i]
+        if (msg.role === 'bot') {
+          setTyping(true)
+          await new Promise(r => setTimeout(r, 1500))
+          if (cancelled) return
+          setTyping(false)
+          setChatMessages(prev => [...prev, msg])
+        } else {
+          setChatMessages(prev => [...prev, msg])
+        }
+        await new Promise(r => setTimeout(r, 1000))
+      }
+      await new Promise(r => setTimeout(r, 4000))
     }
-    runDemo()
-    return () => { cancelled = true }
-  }, [])
+  }
+  runDemo()
+  return () => { cancelled = true }
+}, [isVisible])
 
   return (
-    <div className="demo-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, maxWidth: 900, margin: '0 auto' }}>
+    <div ref={demoRef} className="demo-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, maxWidth: 900, margin: '0 auto' }}>
       <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20, overflow: 'hidden' }}>
         <div style={{ background: 'rgba(255,255,255,0.05)', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 8, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
           <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#FF5F57' }} />
