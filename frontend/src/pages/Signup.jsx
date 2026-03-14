@@ -35,10 +35,15 @@ export default function Signup() {
         @keyframes pulse { 0%,100% { opacity: 0.3 } 50% { opacity: 0.7 } }
         input { outline: none; }
         input:focus { border-color: rgba(0,212,170,0.6) !important; box-shadow: 0 0 0 3px rgba(0,212,170,0.1) !important; }
+        .signup-right { display: flex; }
+        @media (max-width: 768px) {
+          .signup-right { display: none !important; }
+          .signup-left { padding: 2rem 1.5rem !important; }
+        }
       `}</style>
 
       {/* LEFT PANEL */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '3rem', position: 'relative', overflow: 'hidden' }}>
+      <div className="signup-left" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '3rem', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '10%', left: '10%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,212,170,0.1) 0%, transparent 70%)', animation: 'pulse 4s ease-in-out infinite', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: '10%', right: '5%', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,163,255,0.08) 0%, transparent 70%)', animation: 'pulse 5s ease-in-out infinite 1s', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)', backgroundSize: '50px 50px', pointerEvents: 'none' }} />
@@ -51,48 +56,30 @@ export default function Signup() {
             <span style={{ fontFamily: '"Playfair Display", serif', fontSize: 20, fontWeight: 700, color: '#fff' }}>NutriAgent<span style={{ color: '#00D4AA' }}>AI</span></span>
           </div>
 
-          {/* Titolo */}
-          <h1 style={{ fontFamily: '"Playfair Display", serif', fontSize: 36, fontWeight: 900, color: '#fff', letterSpacing: '-1px', marginBottom: 8, lineHeight: 1.2 }}>
+          <h1 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 900, color: '#fff', letterSpacing: '-1px', marginBottom: 8, lineHeight: 1.2 }}>
             {isLogin ? 'Bentornato.' : 'Inizia oggi.'}
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 16, marginBottom: 40 }}>
+          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 15, marginBottom: 36 }}>
             {isLogin ? 'Accedi al tuo account NutriAgentAI' : 'Crea il tuo account e configura il tuo primo agente AI'}
           </p>
 
-          {/* Form */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {!isLogin && (
               <div>
-                <label style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', fontWeight: 600, display: 'block', marginBottom: 8 }}>NOME COMPLETO</label>
-                <input
-                  type="text"
-                  placeholder="Es. Marco Bianchi"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                  style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, padding: '14px 16px', color: '#fff', fontSize: 15, fontFamily: '"DM Sans", sans-serif', transition: 'border-color 0.2s, box-shadow 0.2s' }}
-                />
+                <label style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', fontWeight: 600, display: 'block', marginBottom: 8, letterSpacing: '1px' }}>NOME COMPLETO</label>
+                <input type="text" placeholder="Es. Marco Bianchi" value={name} onChange={e => setName(e.target.value)}
+                  style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, padding: '14px 16px', color: '#fff', fontSize: 15, fontFamily: '"DM Sans", sans-serif', transition: 'border-color 0.2s, box-shadow 0.2s' }} />
               </div>
             )}
             <div>
-              <label style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', fontWeight: 600, display: 'block', marginBottom: 8 }}>EMAIL</label>
-              <input
-                type="email"
-                placeholder="marco@tuostudio.it"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, padding: '14px 16px', color: '#fff', fontSize: 15, fontFamily: '"DM Sans", sans-serif', transition: 'border-color 0.2s, box-shadow 0.2s' }}
-              />
+              <label style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', fontWeight: 600, display: 'block', marginBottom: 8, letterSpacing: '1px' }}>EMAIL</label>
+              <input type="email" placeholder="marco@tuostudio.it" value={email} onChange={e => setEmail(e.target.value)}
+                style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, padding: '14px 16px', color: '#fff', fontSize: 15, fontFamily: '"DM Sans", sans-serif', transition: 'border-color 0.2s, box-shadow 0.2s' }} />
             </div>
             <div>
-              <label style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', fontWeight: 600, display: 'block', marginBottom: 8 }}>PASSWORD</label>
-              <input
-                type="password"
-                placeholder="Almeno 8 caratteri"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-                style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, padding: '14px 16px', color: '#fff', fontSize: 15, fontFamily: '"DM Sans", sans-serif', transition: 'border-color 0.2s, box-shadow 0.2s' }}
-              />
+              <label style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', fontWeight: 600, display: 'block', marginBottom: 8, letterSpacing: '1px' }}>PASSWORD</label>
+              <input type="password" placeholder="Almeno 8 caratteri" value={password} onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+                style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, padding: '14px 16px', color: '#fff', fontSize: 15, fontFamily: '"DM Sans", sans-serif', transition: 'border-color 0.2s, box-shadow 0.2s' }} />
             </div>
 
             {error && (
@@ -109,33 +96,28 @@ export default function Signup() {
             </button>
           </div>
 
-          {/* Switch */}
           <p style={{ textAlign: 'center', marginTop: 28, fontSize: 14, color: 'rgba(255,255,255,0.35)' }}>
             {isLogin ? 'Non hai un account?' : 'Hai già un account?'}{' '}
             <span onClick={() => { setIsLogin(!isLogin); setError('') }} style={{ color: '#00D4AA', cursor: 'pointer', fontWeight: 600 }}>
               {isLogin ? 'Registrati' : 'Accedi'}
             </span>
           </p>
-
           <p style={{ textAlign: 'center', marginTop: 16, fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>
             Registrandoti accetti i Termini di servizio e la Privacy Policy
           </p>
         </div>
       </div>
 
-      {/* RIGHT PANEL */}
-      <div style={{ flex: 1, background: 'linear-gradient(160deg, rgba(0,212,170,0.06) 0%, rgba(0,163,255,0.06) 100%)', borderLeft: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '3rem', position: 'relative', overflow: 'hidden' }}>
-
+      {/* RIGHT PANEL - nascosto su mobile */}
+      <div className="signup-right" style={{ flex: 1, background: 'linear-gradient(160deg, rgba(0,212,170,0.06) 0%, rgba(0,163,255,0.06) 100%)', borderLeft: '1px solid rgba(255,255,255,0.05)', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '3rem', position: 'relative', overflow: 'hidden' }}>
         <div style={{ maxWidth: 400, width: '100%' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,212,170,0.1)', border: '1px solid rgba(0,212,170,0.2)', borderRadius: 100, padding: '6px 14px', marginBottom: 32, animation: 'float 3s ease-in-out infinite' }}>
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#00D4AA', display: 'inline-block' }} />
             <span style={{ fontSize: 12, color: '#00D4AA', fontWeight: 600 }}>Setup in 30 minuti</span>
           </div>
-
-          <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 32, fontWeight: 700, color: '#fff', letterSpacing: '-0.5px', lineHeight: 1.2, marginBottom: 32 }}>
+          <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 700, color: '#fff', letterSpacing: '-0.5px', lineHeight: 1.2, marginBottom: 32 }}>
             Il tuo studio lavora.<br /><span style={{ color: '#00D4AA' }}>Anche quando dormi.</span>
           </h2>
-
           {[
             { icon: '🤖', title: 'Agenti AI personalizzati', desc: 'Addestrati con i tuoi protocolli e documenti' },
             { icon: '💬', title: 'Chat su WhatsApp', desc: 'I pazienti scrivono dove sono già abituati' },
