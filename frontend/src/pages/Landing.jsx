@@ -43,31 +43,46 @@ function FAQItem({ q, a }) {
 
 function NavBar() {
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', h)
     return () => window.removeEventListener('scroll', h)
   }, [])
   return (
-    <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, padding: '0 2rem', background: scrolled ? 'rgba(8,10,14,0.92)' : 'transparent', backdropFilter: scrolled ? 'blur(20px)' : 'none', borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none', transition: 'all 0.4s ease', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '72px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, #00D4AA, #00A3FF)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>🌿</div>
-        <span style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: 20, fontWeight: 700, color: '#fff' }}>NutriAgent<span style={{ color: '#00D4AA' }}>AI</span></span>
+    <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, padding: '0 1.5rem', background: scrolled ? 'rgba(8,10,14,0.92)' : 'transparent', backdropFilter: scrolled ? 'blur(20px)' : 'none', borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none', transition: 'all 0.4s ease', height: '72px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, #00D4AA, #00A3FF)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>🌿</div>
+          <span style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: 20, fontWeight: 700, color: '#fff' }}>NutriAgent<span style={{ color: '#00D4AA' }}>AI</span></span>
+        </div>
+        <div className="nav-desktop" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+          {['Demo', 'Agenti', 'Prezzi', 'FAQ'].map(item => (
+            <a key={item} href={`#${item.toLowerCase()}`} style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'none', fontSize: 14, fontFamily: '"DM Sans", sans-serif', fontWeight: 500, transition: 'color 0.2s' }}
+              onMouseEnter={e => e.target.style.color = '#fff'}
+              onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.55)'}
+            >{item}</a>
+          ))}
+          <a href="/payment" style={{ background: 'linear-gradient(135deg, #00D4AA, #00A3FF)', color: '#000', padding: '10px 22px', borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: 'none', fontFamily: '"DM Sans", sans-serif' }}>Inizia gratis →</a>
+        </div>
+        <button className="nav-mobile-btn" onClick={() => setMenuOpen(!menuOpen)} style={{ display: 'none', background: 'transparent', border: 'none', cursor: 'pointer', padding: 8, flexDirection: 'column', gap: 5 }}>
+          <div style={{ width: 24, height: 2, background: '#fff', transition: 'all 0.3s', transform: menuOpen ? 'rotate(45deg) translate(5px,5px)' : 'none' }} />
+          <div style={{ width: 24, height: 2, background: '#fff', opacity: menuOpen ? 0 : 1, transition: 'all 0.3s' }} />
+          <div style={{ width: 24, height: 2, background: '#fff', transition: 'all 0.3s', transform: menuOpen ? 'rotate(-45deg) translate(5px,-5px)' : 'none' }} />
+        </button>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-        {['Demo', 'Agenti', 'Prezzi', 'FAQ'].map(item => (
-          <a key={item} href={`#${item.toLowerCase()}`} style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'none', fontSize: 14, fontFamily: '"DM Sans", sans-serif', fontWeight: 500, transition: 'color 0.2s' }}
-            onMouseEnter={e => e.target.style.color = '#fff'}
-            onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.55)'}
-          >{item}</a>
-        ))}
-        <a href="/payment" style={{ background: 'linear-gradient(135deg, #00D4AA, #00A3FF)', color: '#000', padding: '10px 22px', borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: 'none', fontFamily: '"DM Sans", sans-serif' }}>Inizia gratis →</a>
-      </div>
+      {menuOpen && (
+        <div style={{ position: 'absolute', top: 72, left: 0, right: 0, background: 'rgba(8,10,14,0.98)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '20px 1.5rem', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {['Demo', 'Agenti', 'Prezzi', 'FAQ'].map(item => (
+            <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMenuOpen(false)} style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: 16, fontFamily: '"DM Sans", sans-serif', fontWeight: 500, padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{item}</a>
+          ))}
+          <a href="/payment" style={{ background: 'linear-gradient(135deg, #00D4AA, #00A3FF)', color: '#000', padding: '14px', borderRadius: 8, fontSize: 15, fontWeight: 700, textDecoration: 'none', fontFamily: '"DM Sans", sans-serif', textAlign: 'center', marginTop: 8 }}>Inizia gratis →</a>
+        </div>
+      )}
     </nav>
   )
 }
 
-// ── DEMO MOCKUP ANIMATO ───────────────────────────────────────────────────────
 function DemoMockup() {
   const [uploadedFiles, setUploadedFiles] = useState([])
   const [chatMessages, setChatMessages] = useState([])
@@ -81,28 +96,24 @@ function DemoMockup() {
 
   const conversation = [
     { role: 'user', text: 'Ciao! Ho la celiachia, cosa posso mangiare a colazione?' },
-    { role: 'bot', text: 'In base al tuo piano nutrizionale: fiocchi di riso con latte vegetale, frutta fresca e caffè d\'orzo. Evita frumento, orzo e segale. 🌿' },
-    { role: 'user', text: 'Perfetto! E per lo spuntino di metà mattina?' },
-    { role: 'bot', text: '30g di noci o mandorle, oppure uno yogurt senza glutine con miele. Controlla sempre l\'etichetta! ✅' },
+    { role: 'bot', text: 'In base al tuo piano: fiocchi di riso con latte vegetale, frutta fresca e caffè d\'orzo. Evita frumento, orzo e segale. 🌿' },
+    { role: 'user', text: 'Perfetto! E per lo spuntino?' },
+    { role: 'bot', text: '30g di noci o mandorle, oppure yogurt senza glutine con miele. Controlla sempre l\'etichetta! ✅' },
   ]
 
   useEffect(() => {
     let cancelled = false
-
     async function runDemo() {
       while (!cancelled) {
         setUploadedFiles([])
         setChatMessages([])
         setTyping(false)
-
         for (let i = 0; i < files.length; i++) {
           if (cancelled) return
           await new Promise(r => setTimeout(r, 800))
           setUploadedFiles(prev => [...prev, files[i]])
         }
-
         await new Promise(r => setTimeout(r, 600))
-
         for (let i = 0; i < conversation.length; i++) {
           if (cancelled) return
           const msg = conversation[i]
@@ -117,25 +128,21 @@ function DemoMockup() {
           }
           await new Promise(r => setTimeout(r, 1000))
         }
-
         await new Promise(r => setTimeout(r, 4000))
       }
     }
-
     runDemo()
     return () => { cancelled = true }
   }, [])
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, maxWidth: 900, margin: '0 auto' }}>
-
-      {/* PANNELLO ADMIN */}
+    <div className="demo-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, maxWidth: 900, margin: '0 auto' }}>
       <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20, overflow: 'hidden' }}>
         <div style={{ background: 'rgba(255,255,255,0.05)', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 8, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
           <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#FF5F57' }} />
           <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#FEBC2E' }} />
           <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#28C840' }} />
-          <span style={{ marginLeft: 8, fontSize: 12, color: 'rgba(255,255,255,0.4)', fontFamily: '"DM Sans", sans-serif' }}>NutriAgentAI — Pannello Admin</span>
+          <span style={{ marginLeft: 8, fontSize: 12, color: 'rgba(255,255,255,0.4)', fontFamily: '"DM Sans", sans-serif' }}>Pannello Admin</span>
         </div>
         <div style={{ padding: 20 }}>
           <p style={{ fontSize: 11, color: '#00D4AA', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: 12 }}>📂 Documenti pazienti</p>
@@ -156,14 +163,12 @@ function DemoMockup() {
             {uploadedFiles.length < files.length && (
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px' }}>
                 <div style={{ width: 18, height: 18, borderRadius: '50%', border: '2px solid #00D4AA', borderTopColor: 'transparent', animation: 'spin 0.8s linear infinite' }} />
-                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>Caricamento in corso...</p>
+                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>Caricamento...</p>
               </div>
             )}
           </div>
         </div>
       </div>
-
-      {/* CHAT WHATSAPP */}
       <div style={{ background: '#0A1628', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20, overflow: 'hidden' }}>
         <div style={{ background: '#075E54', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #00D4AA, #075E54)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>🌿</div>
@@ -172,9 +177,9 @@ function DemoMockup() {
             <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)' }}>● Online</p>
           </div>
         </div>
-        <div style={{ padding: 16, minHeight: 260, display: 'flex', flexDirection: 'column', gap: 8, overflowY: 'auto' }}>
+        <div style={{ padding: 16, minHeight: 220, display: 'flex', flexDirection: 'column', gap: 8, overflowY: 'auto' }}>
           {chatMessages.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '40px 0' }}>
+            <div style={{ textAlign: 'center', padding: '30px 0' }}>
               <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>In attesa dei documenti...</p>
             </div>
           )}
@@ -200,7 +205,6 @@ function DemoMockup() {
           <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#00D4AA', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>➤</div>
         </div>
       </div>
-
       <style>{`
         @keyframes spin { to { transform: rotate(360deg) } }
         @keyframes bounce { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
@@ -209,7 +213,6 @@ function DemoMockup() {
   )
 }
 
-// ── MAIN ──────────────────────────────────────────────────────────────────────
 export default function Landing() {
   const navigate = useNavigate()
 
@@ -252,88 +255,101 @@ export default function Landing() {
         @keyframes float { 0%,100% { transform: translateY(0px) } 50% { transform: translateY(-12px) } }
         @keyframes pulse-glow { 0%,100% { opacity: 0.4 } 50% { opacity: 0.8 } }
         @keyframes gradient-shift { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }
+        @media (max-width: 768px) {
+          .nav-desktop { display: none !important; }
+          .nav-mobile-btn { display: flex !important; }
+          .demo-grid { grid-template-columns: 1fr !important; }
+          .problems-grid { grid-template-columns: 1fr !important; }
+          .agents-grid { grid-template-columns: 1fr !important; }
+          .plans-grid { grid-template-columns: 1fr !important; }
+          .hero-btns { flex-direction: column !important; align-items: stretch !important; }
+          .hero-section { padding: 100px 1.2rem 60px !important; }
+          .section-pad { padding: 60px 1.2rem !important; }
+          .steps-content { padding-bottom: 32px !important; }
+          .faq-pad { padding: 60px 1.2rem !important; }
+        }
       `}</style>
 
       <NavBar />
 
       {/* HERO */}
-      <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden', padding: '120px 2rem 80px' }}>
+      <section className="hero-section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden', padding: '120px 2rem 80px' }}>
         <div style={{ position: 'absolute', top: '15%', left: '8%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,212,170,0.12) 0%, transparent 70%)', animation: 'pulse-glow 4s ease-in-out infinite', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: '10%', right: '5%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,163,255,0.1) 0%, transparent 70%)', animation: 'pulse-glow 5s ease-in-out infinite 1s', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)', backgroundSize: '60px 60px', pointerEvents: 'none' }} />
-        <div style={{ maxWidth: 900, textAlign: 'center', position: 'relative', zIndex: 1 }}>
+        <div style={{ maxWidth: 900, textAlign: 'center', position: 'relative', zIndex: 1, width: '100%' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,212,170,0.1)', border: '1px solid rgba(0,212,170,0.25)', borderRadius: 100, padding: '8px 18px', marginBottom: 36, animation: 'float 3s ease-in-out infinite' }}>
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#00D4AA', display: 'inline-block', boxShadow: '0 0 8px #00D4AA' }} />
             <span style={{ fontSize: 13, color: '#00D4AA', fontWeight: 600 }}>Powered by Claude AI · Anthropic</span>
           </div>
-          <h1 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(42px, 7vw, 82px)', fontWeight: 900, lineHeight: 1.08, color: '#fff', marginBottom: 12, letterSpacing: '-2px' }}>
+          <h1 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(36px, 7vw, 82px)', fontWeight: 900, lineHeight: 1.08, color: '#fff', marginBottom: 12, letterSpacing: '-2px' }}>
             Il tuo studio nutrizionale<br />
             <span style={{ background: 'linear-gradient(135deg, #00D4AA 0%, #00A3FF 50%, #00D4AA 100%)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', animation: 'gradient-shift 4s ease infinite' }}>lavora anche di notte.</span>
           </h1>
-          <p style={{ fontSize: 19, color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, maxWidth: 620, margin: '28px auto 48px' }}>
+          <p style={{ fontSize: 'clamp(15px, 2vw, 19px)', color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, maxWidth: 620, margin: '28px auto 48px' }}>
             Agenti AI personalizzati con i tuoi protocolli e documenti. I pazienti chattano su WhatsApp. Tu recuperi ore di lavoro ogni settimana.
           </p>
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="hero-btns" style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <button onClick={() => navigate('/payment')} style={{ background: 'linear-gradient(135deg, #00D4AA, #00A3FF)', color: '#000', border: 'none', padding: '16px 36px', borderRadius: 10, fontSize: 16, fontWeight: 700, cursor: 'pointer', fontFamily: '"DM Sans", sans-serif', boxShadow: '0 0 40px rgba(0,212,170,0.3)', transition: 'transform 0.2s' }}
               onMouseEnter={e => e.target.style.transform = 'scale(1.04)'}
               onMouseLeave={e => e.target.style.transform = 'scale(1)'}
             >Crea il tuo agente gratis →</button>
-            <a href="#demo" style={{ background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.15)', padding: '16px 32px', borderRadius: 10, fontSize: 16, fontWeight: 500, cursor: 'pointer', fontFamily: '"DM Sans", sans-serif', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>Guarda la demo ▼</a>
+            <a href="#demo" style={{ background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.15)', padding: '16px 32px', borderRadius: 10, fontSize: 16, fontWeight: 500, cursor: 'pointer', fontFamily: '"DM Sans", sans-serif', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>Guarda la demo ▼</a>
           </div>
           <p style={{ marginTop: 36, fontSize: 13, color: 'rgba(255,255,255,0.3)' }}>Setup in 30 minuti · Nessuna competenza tecnica · Disdici quando vuoi</p>
         </div>
       </section>
 
-      {/* DEMO ANIMATA */}
-      <section id="demo" style={{ padding: '100px 2rem', background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+      {/* DEMO */}
+      <section id="demo" className="section-pad" style={{ padding: '100px 2rem', background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <FadeIn>
             <div style={{ textAlign: 'center', marginBottom: 56 }}>
               <p style={{ color: '#00D4AA', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: 16 }}>Come funziona</p>
-              <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(32px, 4vw, 52px)', color: '#fff', fontWeight: 700, letterSpacing: '-1px' }}>Dalla configurazione alla chat WhatsApp</h2>
-              <p style={{ color: 'rgba(255,255,255,0.4)', marginTop: 12, fontSize: 16 }}>Carica i documenti dei tuoi pazienti → l'agente risponde automaticamente su WhatsApp</p>
+              <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(26px, 4vw, 52px)', color: '#fff', fontWeight: 700, letterSpacing: '-1px' }}>Dalla configurazione alla chat WhatsApp</h2>
+              <p style={{ color: 'rgba(255,255,255,0.4)', marginTop: 12, fontSize: 16 }}>Carica i documenti → l'agente risponde automaticamente su WhatsApp</p>
             </div>
           </FadeIn>
-          <FadeIn delay={0.2}>
-            <DemoMockup />
-          </FadeIn>
+          <FadeIn delay={0.2}><DemoMockup /></FadeIn>
         </div>
       </section>
 
       {/* PROBLEMS */}
-      <section style={{ padding: '100px 2rem', maxWidth: 1100, margin: '0 auto' }}>
-        <FadeIn>
-          <div style={{ textAlign: 'center', marginBottom: 64 }}>
-            <p style={{ color: '#00D4AA', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: 16 }}>Il problema</p>
-            <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(32px, 4vw, 52px)', color: '#fff', fontWeight: 700, letterSpacing: '-1px' }}>Riconosci la tua settimana?</h2>
+      <section className="section-pad" style={{ padding: '100px 2rem' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <FadeIn>
+            <div style={{ textAlign: 'center', marginBottom: 64 }}>
+              <p style={{ color: '#00D4AA', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: 16 }}>Il problema</p>
+              <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(26px, 4vw, 52px)', color: '#fff', fontWeight: 700, letterSpacing: '-1px' }}>Riconosci la tua settimana?</h2>
+            </div>
+          </FadeIn>
+          <div className="problems-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
+            {problems.map((p, i) => (
+              <FadeIn key={i} delay={i * 0.08}>
+                <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: '28px', transition: 'border-color 0.3s, background 0.3s' }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(0,212,170,0.2)'; e.currentTarget.style.background = 'rgba(0,212,170,0.04)' }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)' }}
+                >
+                  <div style={{ fontSize: 28, marginBottom: 14 }}>{p.icon}</div>
+                  <h3 style={{ color: '#fff', fontSize: 17, fontWeight: 700, marginBottom: 8, fontFamily: '"Playfair Display", serif' }}>{p.title}</h3>
+                  <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14, lineHeight: 1.6 }}>{p.desc}</p>
+                </div>
+              </FadeIn>
+            ))}
           </div>
-        </FadeIn>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
-          {problems.map((p, i) => (
-            <FadeIn key={i} delay={i * 0.08}>
-              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: '28px', transition: 'border-color 0.3s, background 0.3s' }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(0,212,170,0.2)'; e.currentTarget.style.background = 'rgba(0,212,170,0.04)' }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)' }}
-              >
-                <div style={{ fontSize: 28, marginBottom: 14 }}>{p.icon}</div>
-                <h3 style={{ color: '#fff', fontSize: 17, fontWeight: 700, marginBottom: 8, fontFamily: '"Playfair Display", serif' }}>{p.title}</h3>
-                <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14, lineHeight: 1.6 }}>{p.desc}</p>
-              </div>
-            </FadeIn>
-          ))}
         </div>
       </section>
 
       {/* AGENTS */}
-      <section id="agenti" style={{ padding: '100px 2rem', background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+      <section id="agenti" className="section-pad" style={{ padding: '100px 2rem', background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <FadeIn>
             <div style={{ textAlign: 'center', marginBottom: 64 }}>
               <p style={{ color: '#00D4AA', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: 16 }}>I tuoi agenti</p>
-              <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(32px, 4vw, 52px)', color: '#fff', fontWeight: 700, letterSpacing: '-1px' }}>Tre assistenti. Zero straordinari.</h2>
+              <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(26px, 4vw, 52px)', color: '#fff', fontWeight: 700, letterSpacing: '-1px' }}>Tre assistenti. Zero straordinari.</h2>
             </div>
           </FadeIn>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24 }}>
+          <div className="agents-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24 }}>
             {agents.map((a, i) => (
               <FadeIn key={i} delay={i * 0.12}>
                 <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: '36px 32px', transition: 'border-color 0.3s, transform 0.3s' }}
@@ -364,16 +380,16 @@ export default function Landing() {
       </section>
 
       {/* PRICING */}
-      <section id="prezzi" style={{ padding: '100px 2rem' }}>
+      <section id="prezzi" className="section-pad" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <FadeIn>
             <div style={{ textAlign: 'center', marginBottom: 64 }}>
               <p style={{ color: '#00D4AA', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: 16 }}>Prezzi</p>
-              <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(32px, 4vw, 52px)', color: '#fff', fontWeight: 700, letterSpacing: '-1px' }}>Semplice. Trasparente. Senza sorprese.</h2>
+              <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(26px, 4vw, 52px)', color: '#fff', fontWeight: 700, letterSpacing: '-1px' }}>Semplice. Trasparente. Senza sorprese.</h2>
               <p style={{ color: 'rgba(255,255,255,0.4)', marginTop: 12, fontSize: 15 }}>Setup una tantum + abbonamento mensile. Disdici quando vuoi.</p>
             </div>
           </FadeIn>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
+          <div className="plans-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
             {plans.map((plan, i) => (
               <FadeIn key={i} delay={i * 0.1}>
                 <div style={{ background: plan.tag ? 'linear-gradient(160deg, rgba(0,212,170,0.08), rgba(0,163,255,0.08))' : 'rgba(255,255,255,0.03)', border: plan.tag ? '1px solid rgba(0,212,170,0.35)' : '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: '36px 28px', position: 'relative', transition: 'transform 0.3s' }}
@@ -404,27 +420,29 @@ export default function Landing() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" style={{ padding: '100px 2rem', maxWidth: 800, margin: '0 auto' }}>
-        <FadeIn>
-          <div style={{ textAlign: 'center', marginBottom: 64 }}>
-            <p style={{ color: '#00D4AA', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: 16 }}>FAQ</p>
-            <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(32px, 4vw, 52px)', color: '#fff', fontWeight: 700, letterSpacing: '-1px' }}>Domande frequenti</h2>
+      <section id="faq" className="faq-pad" style={{ padding: '100px 2rem', background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div style={{ maxWidth: 800, margin: '0 auto' }}>
+          <FadeIn>
+            <div style={{ textAlign: 'center', marginBottom: 64 }}>
+              <p style={{ color: '#00D4AA', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: 16 }}>FAQ</p>
+              <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(26px, 4vw, 52px)', color: '#fff', fontWeight: 700, letterSpacing: '-1px' }}>Domande frequenti</h2>
+            </div>
+          </FadeIn>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {faqs.map((f, i) => <FadeIn key={i} delay={i * 0.06}><FAQItem q={f.q} a={f.a} /></FadeIn>)}
           </div>
-        </FadeIn>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {faqs.map((f, i) => <FadeIn key={i} delay={i * 0.06}><FAQItem q={f.q} a={f.a} /></FadeIn>)}
         </div>
       </section>
 
       {/* CTA FINALE */}
-      <section style={{ padding: '100px 2rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <section className="section-pad" style={{ padding: '100px 2rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 600, height: 400, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,212,170,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
         <FadeIn>
           <div style={{ position: 'relative', zIndex: 1 }}>
-            <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(36px, 5vw, 64px)', color: '#fff', fontWeight: 900, letterSpacing: '-2px', lineHeight: 1.1, marginBottom: 20 }}>
+            <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(30px, 5vw, 64px)', color: '#fff', fontWeight: 900, letterSpacing: '-2px', lineHeight: 1.1, marginBottom: 20 }}>
               Inizia oggi.<br /><span style={{ color: '#00D4AA' }}>I tuoi pazienti ti aspettano.</span>
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 18, maxWidth: 500, margin: '0 auto 40px', lineHeight: 1.6 }}>Configura il tuo primo agente in 30 minuti. I clienti lo usano direttamente su WhatsApp.</p>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 'clamp(14px, 2vw, 18px)', maxWidth: 500, margin: '0 auto 40px', lineHeight: 1.6 }}>Configura il tuo primo agente in 30 minuti. I clienti lo usano direttamente su WhatsApp.</p>
             <button onClick={() => navigate('/payment')} style={{ background: 'linear-gradient(135deg, #00D4AA, #00A3FF)', color: '#000', border: 'none', padding: '18px 48px', borderRadius: 12, fontSize: 18, fontWeight: 700, cursor: 'pointer', fontFamily: '"DM Sans", sans-serif', boxShadow: '0 0 60px rgba(0,212,170,0.35)', transition: 'transform 0.2s' }}
               onMouseEnter={e => e.target.style.transform = 'scale(1.05)'}
               onMouseLeave={e => e.target.style.transform = 'scale(1)'}
@@ -435,7 +453,7 @@ export default function Landing() {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '40px 2rem', textAlign: 'center' }}>
+      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '40px 1.5rem', textAlign: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 16 }}>
           <div style={{ width: 28, height: 28, borderRadius: 8, background: 'linear-gradient(135deg, #00D4AA, #00A3FF)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }}>🌿</div>
           <span style={{ fontFamily: '"Playfair Display", serif', fontSize: 16, fontWeight: 700, color: '#fff' }}>NutriAgent<span style={{ color: '#00D4AA' }}>AI</span></span>
