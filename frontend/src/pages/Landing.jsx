@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function useInView(threshold = 0.05) {
@@ -86,7 +86,7 @@ function NavBar() {
   )
 }
 
-function DemoMockup() {
+const DemoMockup = memo(function DemoMockup() {
   const [uploadedFiles, setUploadedFiles] = useState([])
   const [chatMessages, setChatMessages] = useState([])
   const [typing, setTyping] = useState(false)
@@ -214,7 +214,7 @@ function DemoMockup() {
       `}</style>
     </div>
   )
-}
+})
 
 export default function Landing() {
   const navigate = useNavigate()
