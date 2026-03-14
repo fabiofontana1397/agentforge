@@ -71,7 +71,7 @@ export default function Admin() {
         .agents-list-only { display: block; }
         @media (max-width: 768px) {
           .agents-layout { grid-template-columns: 1fr !important; }
-          .new-agent-btn span { display: none; }
+          
         }
       `}</style>
 
@@ -83,9 +83,8 @@ export default function Admin() {
             <h1 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, letterSpacing: '-1px', marginBottom: 4 }}>I miei Agenti</h1>
             <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14 }}>Crea e gestisci i tuoi assistenti AI</p>
           </div>
-          <button className="new-agent-btn" onClick={() => { setCreating(true); setSelectedAgent(null) }} style={{ background: 'linear-gradient(135deg, #00D4AA, #00A3FF)', color: '#000', border: 'none', padding: '12px 20px', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: '"DM Sans", sans-serif', boxShadow: '0 0 20px rgba(0,212,170,0.2)', whiteSpace: 'nowrap', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontSize: 18 }}>+</span>
-            <span>Nuovo agente</span>
+          <button onClick={() => { setCreating(true); setSelectedAgent(null) }} style={{ background: 'linear-gradient(135deg, #00D4AA, #00A3FF)', color: '#000', border: 'none', padding: '12px 20px', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: '"DM Sans", sans-serif', boxShadow: '0 0 20px rgba(0,212,170,0.2)', whiteSpace: 'nowrap', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+            + Nuovo agente
           </button>
         </div>
 
