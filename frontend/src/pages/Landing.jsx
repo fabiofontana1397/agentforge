@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function useInView(threshold = 0.15) {
+function useInView(threshold = 0.05) {
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true) }, { threshold })
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) setVisible(true)
+    }, { threshold, rootMargin: '0px 0px -50px 0px' })
     if (ref.current) obs.observe(ref.current)
     return () => obs.disconnect()
   }, [])
@@ -17,8 +19,9 @@ function FadeIn({ children, delay = 0, className = '' }) {
   return (
     <div ref={ref} className={className} style={{
       opacity: visible ? 1 : 0,
-      transform: visible ? 'translateY(0)' : 'translateY(32px)',
-      transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`
+      transform: visible ? 'translateY(0)' : 'translateY(20px)',
+      transition: `opacity 0.5s ease ${delay}s, transform 0.5s ease ${delay}s`,
+      willChange: 'opacity, transform'
     }}>{children}</div>
   )
 }
