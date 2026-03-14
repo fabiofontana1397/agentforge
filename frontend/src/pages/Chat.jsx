@@ -117,10 +117,18 @@ export default function Chat() {
       })
 
       const data = await response.json()
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: data.content[0].text
-      }])
+console.log('Risposta Anthropic:', JSON.stringify(data))
+if (data.content && data.content[0] && data.content[0].text) {
+  setMessages(prev => [...prev, {
+    role: 'assistant',
+    content: data.content[0].text
+  }])
+} else {
+  setMessages(prev => [...prev, {
+    role: 'assistant',
+    content: 'Errore nella risposta. Riprova.'
+  }])
+}
     } catch (err) {
       setMessages(prev => [...prev, {
         role: 'assistant',
