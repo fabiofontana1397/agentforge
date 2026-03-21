@@ -276,13 +276,19 @@ export default function Landing() {
         .client-pill { padding:6px 16px; border:1px solid var(--border); border-radius:100px; font-size:13px; color:var(--muted); background:rgba(255,255,255,0.02); transition:all 0.2s; }
         .client-pill:hover { border-color:var(--border-hover); color:var(--text); }
 
+        .steps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:2px; }
         .step-card { position:relative; padding:40px 36px; background:var(--surface); border:1px solid var(--border); transition:all 0.3s; overflow:hidden; }
         .step-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,var(--glow1),transparent 60%); opacity:0; transition:opacity 0.3s; }
         .step-card:hover { border-color:var(--border-hover); }
         .step-card:hover::before { opacity:1; }
 
+        .features-header { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:end; margin-bottom:80px; }
+        .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border-radius:16px; overflow:hidden; }
         .feat-card { background:var(--surface2); padding:36px 32px; transition:background 0.3s; }
         .feat-card:hover { background:#181820; }
+
+        .demo-layout { display:grid; grid-template-columns:1fr 1.2fr; gap:80px; align-items:center; }
+        .pricing-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--border); border-radius:20px; overflow:hidden; }
 
         .footer-link { font-size:13px; color:var(--muted); text-decoration:none; transition:color 0.2s; }
         .footer-link:hover { color:var(--text); }
@@ -381,7 +387,7 @@ export default function Landing() {
           <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(32px,4vw,52px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.025em', marginBottom: 20 }}>Attiva Naomi<br />in tre passi</div>
           <p style={{ fontSize: 17, fontWeight: 300, color: 'var(--muted)', maxWidth: 500, lineHeight: 1.6 }}>Nessuna competenza tecnica richiesta. In meno di 30 minuti Naomi è pronta a rispondere ai tuoi clienti.</p>
         </div>
-        <div className="steps-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 2 }}>
+        <div className="steps-grid">
           {[
             { n: '01', t: 'Raccontaci la tua attività', d: 'Compila un semplice form con i tuoi servizi, orari e informazioni. Puoi anche caricare documenti e brochure.' },
             { n: '02', t: 'Naomi impara e si adatta', d: 'In pochi minuti il tuo agente personale viene addestrato su tutte le informazioni che hai fornito.' },
@@ -399,14 +405,14 @@ export default function Landing() {
       {/* ── FEATURES ── */}
       <section id="funzionalita" style={{ padding: '120px 48px', background: 'var(--surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div className="features-header" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'end', marginBottom: 80 }}>
+          <div className="features-header">
             <div>
               <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent1)', marginBottom: 16 }}>Funzionalità</div>
               <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(32px,4vw,52px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.025em' }}>Tutto quello che ti serve, già dentro</div>
             </div>
             <p style={{ fontSize: 17, fontWeight: 300, color: 'var(--muted)', lineHeight: 1.6 }}>Naomi non è un semplice chatbot. È un agente intelligente addestrato sulla tua attività, disponibile ogni ora del giorno.</p>
           </div>
-          <div className="features-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 1, background: 'var(--border)', borderRadius: 16, overflow: 'hidden' }}>
+          <div className="features-grid">
             {[
               { icon: '💬', color: 'purple', t: 'Chat WhatsApp nativa', d: 'I tuoi clienti scrivono dove già si trovano. Nessuna app da installare, nessun link da condividere.' },
               { icon: '🧠', color: 'teal',   t: 'Memoria contestuale', d: 'Naomi ricorda le conversazioni precedenti e risponde con coerenza, come farebbe un vero assistente.' },
@@ -430,7 +436,7 @@ export default function Landing() {
 
       {/* ── DEMO CHAT ── */}
       <section id="demo" style={{ padding: '120px 48px', maxWidth: 1200, margin: '0 auto' }}>
-        <div className="demo-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 80, alignItems: 'center' }}>
+        <div className="demo-layout">
           <div>
             <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent1)', marginBottom: 16 }}>Demo live</div>
             <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(28px,3.5vw,44px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.025em', marginBottom: 16 }}>Come risponde Naomi ai tuoi clienti</div>
@@ -463,7 +469,7 @@ export default function Landing() {
             <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(32px,4vw,52px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.025em', marginBottom: 16 }}>Semplice, trasparente,<br />senza sorprese</div>
             <p style={{ fontSize: 17, fontWeight: 300, color: 'var(--muted)', lineHeight: 1.6 }}>14 giorni di prova gratuita su tutti i piani. Nessuna carta di credito richiesta.</p>
           </div>
-          <div className="pricing-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, background: 'var(--border)', borderRadius: 20, overflow: 'hidden' }}>
+          <div className="pricing-grid">
             {/* Starter */}
             <div style={{ background: 'var(--surface2)', padding: '48px 40px' }}>
               <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 16, fontWeight: 600, color: 'var(--muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Starter</div>
