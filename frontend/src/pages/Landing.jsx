@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 /* ── Google Fonts ── */
@@ -136,7 +136,7 @@ function NaomiSphere() {
   )
 }
 
-/* ── Chat Demo ── */
+/* ── Chat Demo — DOM diretto, zero re-render ── */
 const CONVERSATION = [
   { type: 'out', text: 'Ciao! Vorrei prenotare una visita per domani mattina 🙂', time: '14:31' },
   { type: 'in',  text: "Ciao! Sono Naomi, l'assistente del Dr. Rossi. Domani mattina abbiamo disponibilità alle 9:00 e alle 11:30. Quale preferisce?", time: '14:31' },
@@ -145,46 +145,83 @@ const CONVERSATION = [
 ]
 
 function DemoChat() {
-  const [messages, setMessages] = useState([])
-  const [typing, setTyping] = useState(false)
-  const bottomRef = useRef(null)
+  const containerRef = useRef(null)
 
   useEffect(() => {
-    let idx = 0
+    const el = containerRef.current
+    if (!el) return
     let cancelled = false
+    let timers = []
 
-    function runNext() {
+    function addMsg(msg) {
+      const wrap = document.createElement('div')
+      wrap.style.cssText = `display:flex;gap:10px;flex-direction:${msg.type === 'out' ? 'row-reverse' : 'row'};max-width:90%;margin-left:${msg.type === 'out' ? 'auto' : '0'};opacity:0;transform:translateY(8px);transition:opacity 0.3s,transform 0.3s`
+      if (msg.type === 'in') {
+        wrap.innerHTML = `
+          <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#7c6aff,#3ecfcf);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;margin-top:2px;font-family:Syne,sans-serif">N</div>
+          <div>
+            <div style="padding:10px 14px;border-radius:4px 14px 14px 14px;background:var(--surface2);border:1px solid var(--border);font-size:14px;line-height:1.5;color:var(--text)">${msg.text}</div>
+            <div style="font-size:10px;color:rgba(240,239,245,0.25);margin-top:4px;text-align:right">${msg.time}</div>
+          </div>`
+      } else {
+        wrap.innerHTML = `
+          <div>
+            <div style="padding:10px 14px;border-radius:14px 4px 14px 14px;background:rgba(124,106,255,0.2);border:1px solid rgba(124,106,255,0.25);font-size:14px;line-height:1.5;color:var(--text)">${msg.text}</div>
+            <div style="font-size:10px;color:rgba(240,239,245,0.25);margin-top:4px;text-align:right">${msg.time}</div>
+          </div>`
+      }
+      el.appendChild(wrap)
+      requestAnimationFrame(() => { wrap.style.opacity = '1'; wrap.style.transform = 'translateY(0)' })
+    }
+
+    function showTyping() {
+      const d = document.createElement('div')
+      d.id = 'chat-typing'
+      d.style.cssText = 'display:flex;gap:10px'
+      d.innerHTML = `
+        <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#7c6aff,#3ecfcf);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;font-family:Syne,sans-serif">N</div>
+        <div style="display:flex;gap:4px;align-items:center;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:4px 14px 14px 14px">
+          <div style="width:5px;height:5px;border-radius:50%;background:rgba(240,239,245,0.45);animation:typingDot 1.4s ease-in-out 0s infinite"></div>
+          <div style="width:5px;height:5px;border-radius:50%;background:rgba(240,239,245,0.45);animation:typingDot 1.4s ease-in-out 0.2s infinite"></div>
+          <div style="width:5px;height:5px;border-radius:50%;background:rgba(240,239,245,0.45);animation:typingDot 1.4s ease-in-out 0.4s infinite"></div>
+        </div>`
+      el.appendChild(d)
+    }
+
+    function removeTyping() {
+      document.getElementById('chat-typing')?.remove()
+    }
+
+    function run(idx) {
       if (cancelled) return
       if (idx >= CONVERSATION.length) {
-        setTimeout(() => { if (!cancelled) { setMessages([]); idx = 0; setTimeout(runNext, 400) } }, 4000)
-        return
+        const t = setTimeout(() => { if (!cancelled) { el.innerHTML = ''; run(0) } }, 4000)
+        timers.push(t); return
       }
-      const msg = CONVERSATION[idx++]
+      const msg = CONVERSATION[idx]
       if (msg.type === 'in') {
-        setTyping(true)
-        setTimeout(() => {
+        showTyping()
+        const t = setTimeout(() => {
           if (cancelled) return
-          setTyping(false)
-          setMessages(prev => [...prev, msg])
-          setTimeout(runNext, 1800)
+          removeTyping(); addMsg(msg)
+          const t2 = setTimeout(() => run(idx + 1), 1800)
+          timers.push(t2)
         }, 1400)
+        timers.push(t)
       } else {
-        setMessages(prev => [...prev, msg])
-        setTimeout(runNext, 1200)
+        addMsg(msg)
+        const t = setTimeout(() => run(idx + 1), 1200)
+        timers.push(t)
       }
     }
 
-    const t = setTimeout(runNext, 800)
-    return () => { cancelled = true; clearTimeout(t) }
+    const t0 = setTimeout(() => run(0), 800)
+    timers.push(t0)
+    return () => { cancelled = true; timers.forEach(clearTimeout) }
   }, [])
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, typing])
 
   return (
     <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden' }}>
-      {/* header */}
       <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 12, background: 'var(--surface2)' }}>
         <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg,#7c6aff,#3ecfcf)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: '#fff', fontFamily: 'Syne, sans-serif', flexShrink: 0 }}>N</div>
         <div>
@@ -195,37 +232,7 @@ function DemoChat() {
           </div>
         </div>
       </div>
-
-      {/* messages */}
-      <div style={{ padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 16, minHeight: 320, maxHeight: 320, overflowY: 'auto' }}>
-        {messages.map((m, i) => (
-          <div key={i} style={{ display: 'flex', gap: 10, flexDirection: m.type === 'out' ? 'row-reverse' : 'row', maxWidth: '90%', marginLeft: m.type === 'out' ? 'auto' : 0, animation: 'fadeUp 0.35s ease' }}>
-            {m.type === 'in' && (
-              <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg,#7c6aff,#3ecfcf)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#fff', flexShrink: 0, marginTop: 2, fontFamily: 'Syne, sans-serif' }}>N</div>
-            )}
-            <div>
-              <div style={{
-                padding: '10px 14px', borderRadius: m.type === 'out' ? '14px 4px 14px 14px' : '4px 14px 14px 14px',
-                background: m.type === 'out' ? 'rgba(124,106,255,0.2)' : 'var(--surface2)',
-                border: `1px solid ${m.type === 'out' ? 'rgba(124,106,255,0.25)' : 'var(--border)'}`,
-                fontSize: 14, lineHeight: 1.5, color: 'var(--text)'
-              }}>{m.text}</div>
-              <div style={{ fontSize: 10, color: 'rgba(240,239,245,0.25)', marginTop: 4, textAlign: 'right' }}>{m.time}</div>
-            </div>
-          </div>
-        ))}
-        {typing && (
-          <div style={{ display: 'flex', gap: 10 }}>
-            <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg,#7c6aff,#3ecfcf)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#fff', flexShrink: 0, fontFamily: 'Syne, sans-serif' }}>N</div>
-            <div style={{ display: 'flex', gap: 4, alignItems: 'center', padding: '12px 14px', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '4px 14px 14px 14px' }}>
-              {[0, 1, 2].map(i => (
-                <div key={i} style={{ width: 5, height: 5, borderRadius: '50%', background: 'rgba(240,239,245,0.45)', animation: `typingDot 1.4s ease-in-out ${i * 0.2}s infinite` }} />
-              ))}
-            </div>
-          </div>
-        )}
-        <div ref={bottomRef} />
-      </div>
+      <div ref={containerRef} style={{ padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 16, minHeight: 320, maxHeight: 320, overflowY: 'hidden' }} />
     </div>
   )
 }
