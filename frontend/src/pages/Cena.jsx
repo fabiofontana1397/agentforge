@@ -42,12 +42,12 @@ export default function Cena() {
     if (error) setMsg(error.message); else setVoted(true)
   }
 
-  if (ev === null) return <div style={page}>Cena non trovata. <Link to="/" style={{ color: C.accent }}>Home</Link></div>
-  if (!ev) return <div style={page}>Caricamento…</div>
+  if (ev === null) return <div className="camp" style={page}>Cena non trovata. <Link to="/" style={{ color: C.accent }}>Home</Link></div>
+  if (!ev) return <div className="camp" style={page}>Caricamento…</div>
   const started = new Date(ev.starts_at) <= new Date()
 
   return (
-    <div style={page}>
+    <div className="camp" style={page}>
       <div style={{ maxWidth: 560, margin: '0 auto' }}>
         <Link to="/" style={{ color: C.mute }}>← Tutte le cene</Link>
         <h1 style={{ fontSize: 30, margin: '12px 0 4px' }}>{ev.title || 'Cena'}</h1>
@@ -74,15 +74,15 @@ export default function Cena() {
                 <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
                     <button key={n} onClick={() => setScores(s => ({ ...s, [k]: n }))} style={{
-                      width: 38, height: 38, borderRadius: 8, cursor: 'pointer', color: scores[k] === n ? '#000' : '#fff',
-                      background: scores[k] === n ? C.accent : '#0c1016', border: `1px solid ${C.line}` }}>{n}</button>
+                      width: 38, height: 38, borderRadius: 8, cursor: 'pointer', color: scores[k] === n ? C.bg : C.text,
+                      background: scores[k] === n ? C.cream : C.field, border: `1px solid ${C.line}` }}>{n}</button>
                   ))}
                 </div>
               </div>
             ))}
             <button style={{ ...btn, width: '100%', marginTop: 20 }} onClick={submit}>Invia il voto</button>
             <p style={{ color: C.mute, fontSize: 13, marginTop: 8 }}>Il voto non si può modificare dopo l’invio.</p>
-            {msg && <p style={{ color: '#ff6b6b', marginTop: 8 }}>{msg}</p>}
+            {msg && <p style={{ color: '#ff9b86', marginTop: 8 }}>{msg}</p>}
           </div>
         )}
       </div>
