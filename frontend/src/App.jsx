@@ -6,6 +6,8 @@ import Welcome from './pages/Welcome'
 import Dashboard from './pages/Dashboard'
 import Admin from './pages/Admin'
 import Chat from './pages/Chat'
+import SecretBonus from './pages/SecretBonus'
+import FinalNight from './pages/FinalNight'
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
       <Route path="/dashboard/crea" element={<Admin />} />
       <Route path="/dashboard/agenti" element={<Admin />} />
       <Route path="/chat/:agentId" element={<Chat />} />
+      <Route path="/bonus/:eventId" element={<SecretBonus />} />
+      <Route path="/final-night" element={<FinalNight />} />
     </Routes>
   )
 }
