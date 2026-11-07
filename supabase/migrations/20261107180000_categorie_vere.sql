@@ -1,14 +1,15 @@
 -- Categorie vere del campionato.
 -- Normali: mise_en_place, budget, tempistiche. Portate: antipasto, primo, secondo, dolce.
 
--- Converte eventuali voti di prova gia' inseriti con le categorie segnaposto.
+-- 1) Toglie il vecchio vincolo, 2) converte i voti di prova, 3) mette il vincolo nuovo.
+alter table public.votes drop constraint votes_category_check;
+
 update public.votes set category = case category
   when 'ambiente' then 'mise_en_place'
   when 'servizio' then 'budget'
   when 'originalita' then 'tempistiche'
   else category end;
 
-alter table public.votes drop constraint votes_category_check;
 alter table public.votes add constraint votes_category_check check (category in
   ('mise_en_place','antipasto','primo','secondo','dolce','budget','tempistiche'));
 
