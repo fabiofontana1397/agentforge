@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 
+const LABELS = {
+  mise_en_place: 'Mise en place e benvenuto', budget: 'Rispetto del budget', tempistiche: 'Rispetto tempistiche',
+  antipasto: 'Antipasto', primo: 'Primo', secondo: 'Secondo', dolce: 'Dolce',
+}
 const COURSE_ORDER = ['antipasto', 'primo', 'secondo', 'dolce']
 
 function useCountUp(from, to, active, ms = 1800) {
@@ -79,7 +83,7 @@ export default function FinalNight() {
             <h1 style={{ fontSize: 40, animation: 'pop .7s' }}>✉️ {env.couple}</h1>
 
             {step >= 2 && env.normal?.map(n => (
-              <Row key={n.category} label={n.category} value={n.points} />
+              <Row key={n.category} label={LABELS[n.category] || n.category} value={n.points} />
             ))}
 
             {step >= 3 && env.courses && COURSE_ORDER.map(c => {
@@ -87,7 +91,7 @@ export default function FinalNight() {
               const isBonus = step >= 5 && env.bonus_course === c
               const shown = isBonus && step >= 6 ? doubled : pts
               return (
-                <Row key={c} label={c} value={shown} highlight={isBonus}
+                <Row key={c} label={LABELS[c]} value={shown} highlight={isBonus}
                   extra={isBonus ? (step >= 6 ? `BONUS X2 · ${pts} → ${pts * 2}` : '⭐ BONUS X2') : null} />
               )
             })}
