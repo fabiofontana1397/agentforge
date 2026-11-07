@@ -4,8 +4,9 @@ import { supabase } from '../lib/supabase'
 import { page, card, btn, C } from '../lib/ui'
 
 const CATEGORIE = [
-  ['ambiente', 'Ambiente'], ['servizio', 'Servizio'], ['originalita', 'Originalità'],
+  ['mise_en_place', 'Mise en place e benvenuto'],
   ['antipasto', 'Antipasto'], ['primo', 'Primo'], ['secondo', 'Secondo'], ['dolce', 'Dolce'],
+  ['budget', 'Rispetto del budget'], ['tempistiche', 'Rispetto tempistiche'],
 ]
 const fmt = d => new Date(d).toLocaleString('it-IT', { dateStyle: 'full', timeStyle: 'short' })
 
