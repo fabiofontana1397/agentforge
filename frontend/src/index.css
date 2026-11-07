@@ -8,3 +8,11 @@ html, body, #root {
   padding: 0;
   min-height: 100%;
 }
+
+/* Campionato delle Cene: titoli in maiuscolo spaziato, stile osteria */
+.camp h1, .camp h2, .camp h3 {
+  font-family: "Cinzel", Georgia, serif; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; line-height: 1.25;
+}
+.camp h1 { color: #fbe9c9; }
+.camp h2, .camp h3 { color: #c9a566; }
+.camp button, .camp select { font-family: inherit; }

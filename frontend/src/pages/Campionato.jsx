@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
-import { page, card, btn, btnGhost, input, C } from '../lib/ui'
+import { page, card, btn, btnGhost, input, C, DISPLAY } from '../lib/ui'
 
 const fmt = d => new Date(d).toLocaleString('it-IT', { dateStyle: 'medium', timeStyle: 'short' })
 
@@ -47,15 +47,20 @@ export default function Campionato() {
   async function logout() { await supabase.auth.signOut(); setUser(null); setCouple(null) }
 
   return (
-    <div style={page}>
+    <div className="camp" style={page}>
       <div style={{ maxWidth: 640, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-          <b style={{ fontSize: 20 }}>🍽️ Campionato delle Cene</b>
-          {user ? <button style={btnGhost} onClick={logout}>Esci</button>
-                : user === null && <button style={btn} onClick={() => nav('/accesso')}>Accedi</button>}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '-1.5rem -1.5rem 32px', padding: '22px 1.5rem',
+          background: 'linear-gradient(#fbe9c9, #ffe7c3)', color: C.bg }}>
+          <div>
+            <div style={{ fontFamily: DISPLAY, fontSize: 20, fontWeight: 600, letterSpacing: '0.16em' }}>CAMPIONATO</div>
+            <div style={{ fontFamily: DISPLAY, fontSize: 11, letterSpacing: '0.3em', color: C.goldDeep }}>DELLE CENE</div>
+          </div>
+          {user ? <button style={{ ...btnGhost, color: C.bg, borderColor: C.goldDeep, padding: '10px 16px' }} onClick={logout}>Esci</button>
+                : user === null && <button style={{ ...btn, background: C.bg, color: C.cream, padding: '10px 16px' }} onClick={() => nav('/accesso')}>Accedi</button>}
         </div>
 
-        <h1 style={{ fontSize: 34, lineHeight: 1.15, marginBottom: 8 }}>Quattro portate. Un solo vincitore.</h1>
+        <h2 style={{ fontSize: 15, letterSpacing: '0.3em', marginBottom: 10 }}>Quattro portate</h2>
+        <h1 style={{ fontSize: 36, marginBottom: 14 }}>Un solo vincitore</h1>
         <p style={{ color: C.mute, marginBottom: 24 }}>
           Ogni coppia ospita una cena, tutti votano antipasto, primo, secondo e dolce. E c’è un bonus segreto che raddoppia una portata…
         </p>
@@ -80,19 +85,19 @@ export default function Campionato() {
             <button style={btn}>Crea cena e scegli il bonus segreto</button>
           </form>
         )}
-        {err && <p style={{ color: '#ff6b6b' }}>{err}</p>}
+        {err && <p style={{ color: '#ff9b86' }}>{err}</p>}
 
         <h2 style={{ margin: '28px 0 12px' }}>Le cene</h2>
         {events.length === 0 && <p style={{ color: C.mute }}>Nessuna cena in programma.</p>}
         {events.map(e => (
-          <Link key={e.id} to={`/cena/${e.id}`} style={{ ...card, display: 'block', color: '#fff', textDecoration: 'none' }}>
+          <Link key={e.id} to={`/cena/${e.id}`} style={{ ...card, display: 'block', color: C.text, textDecoration: 'none' }}>
             <b>{e.title || 'Cena'}</b>
             <div style={{ color: C.mute, marginTop: 4 }}>{e.couples?.name} · {fmt(e.starts_at)}</div>
           </Link>
         ))}
 
         <Link to="/final-night" style={{ ...btn, display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: 28, background: C.gold }}>
-          🏆 Final Night
+          Final Night
         </Link>
       </div>
     </div>

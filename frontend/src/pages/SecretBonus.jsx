@@ -30,18 +30,18 @@ export default function SecretBonus() {
   }
 
   return (
-    <div style={{ background: '#080A0E', minHeight: '100vh', color: '#fff', padding: '2rem', fontFamily: '"DM Sans", sans-serif' }}>
+    <div className="camp" style={{ background: '#38302b', minHeight: '100vh', color: '#fbe9c9', padding: '2rem', fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: 19 }}>
       <div style={{ maxWidth: 520, margin: '0 auto' }}>
         <h1 style={{ fontSize: 28, marginBottom: 8 }}>Bonus segreto X2</h1>
-        <p style={{ color: '#9aa', marginBottom: 24 }}>
+        <p style={{ color: '#b8a58a', marginBottom: 24 }}>
           Scegli la portata che varrà il doppio. La scelta resta segreta fino alla Final Night
           e, una volta confermata, non si può più cambiare.
         </p>
 
         {locked === null && !error && <p>Caricamento…</p>}
-        {error && locked === null && <p><a href={`/accesso?next=/bonus/${eventId}`} style={{ color: '#00D4AA' }}>Accedi →</a></p>}
+        {error && locked === null && <p><a href={`/accesso?next=/bonus/${eventId}`} style={{ color: '#ffe7c3' }}>Accedi →</a></p>}
         {locked && (
-          <div style={{ padding: 20, borderRadius: 12, border: '1px solid #00D4AA', background: 'rgba(0,212,170,.08)' }}>
+          <div style={{ padding: 20, borderRadius: 2, border: '1px solid #ffe7c3', background: 'rgba(255,231,195,.08)' }}>
             🔒 Scelta registrata e congelata. Sarà svelata alla Final Night.
           </div>
         )}
@@ -50,20 +50,20 @@ export default function SecretBonus() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               {COURSES.map(c => (
                 <button key={c} onClick={() => setPick(c)} style={{
-                  padding: 18, borderRadius: 12, textTransform: 'capitalize', fontSize: 18, cursor: 'pointer',
-                  color: '#fff', background: pick === c ? 'rgba(0,212,170,.2)' : '#12161d',
-                  border: `1px solid ${pick === c ? '#00D4AA' : '#2a303b'}`,
+                  padding: 18, borderRadius: 2, textTransform: 'capitalize', fontSize: 18, cursor: 'pointer',
+                  color: '#fbe9c9', background: pick === c ? 'rgba(255,231,195,.15)' : '#463a32',
+                  border: `1px solid ${pick === c ? '#ffe7c3' : '#6b5a47'}`,
                 }}>{c}</button>
               ))}
             </div>
             <button disabled={!pick || busy} onClick={() => window.confirm('Confermi? Non potrai più cambiare.') && confirm()}
-              style={{ marginTop: 20, width: '100%', padding: 14, borderRadius: 12, border: 0, fontWeight: 700,
-                background: pick ? '#00D4AA' : '#2a303b', color: '#000', cursor: pick ? 'pointer' : 'not-allowed' }}>
+              style={{ marginTop: 20, width: '100%', padding: 14, borderRadius: 2, border: 0, fontWeight: 700,
+                background: pick ? '#ffe7c3' : '#6b5a47', color: '#38302b', cursor: pick ? 'pointer' : 'not-allowed' }}>
               Conferma e congela
             </button>
           </>
         )}
-        {error && <p style={{ color: '#ff6b6b', marginTop: 16 }}>{error}</p>}
+        {error && <p style={{ color: '#ff9b86', marginTop: 16 }}>{error}</p>}
       </div>
     </div>
   )

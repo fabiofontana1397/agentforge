@@ -67,10 +67,10 @@ export default function FinalNight() {
   }
 
   return (
-    <div style={{ background: '#080A0E', minHeight: '100vh', color: '#fff', fontFamily: '"DM Sans", sans-serif', padding: '2rem', textAlign: 'center' }}>
+    <div className="camp" style={{ background: '#38302b', minHeight: '100vh', color: '#fbe9c9', fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: 19, padding: '2rem', textAlign: 'center' }}>
       <style>{`
         @keyframes pop { 0% { transform: scale(.6); opacity: 0 } 60% { transform: scale(1.15) } 100% { transform: scale(1); opacity: 1 } }
-        @keyframes glow { 0%,100% { box-shadow: 0 0 10px #ffc83d55 } 50% { box-shadow: 0 0 45px #ffc83dcc } }
+        @keyframes glow { 0%,100% { box-shadow: 0 0 10px #c9a56655 } 50% { box-shadow: 0 0 45px #c9a566cc } }
         @keyframes beat { 0%,100% { opacity: .35 } 50% { opacity: 1 } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px) } to { opacity: 1; transform: none } }
       `}</style>
@@ -103,7 +103,7 @@ export default function FinalNight() {
             )}
 
             {step >= 7 && env.total != null && (
-              <h2 style={{ marginTop: 32, fontSize: 36, color: '#00D4AA', animation: 'pop .8s' }}>
+              <h2 style={{ marginTop: 32, fontSize: 36, color: '#ffe7c3', animation: 'pop .8s' }}>
                 Totale cena: {env.total}
               </h2>
             )}
@@ -113,13 +113,13 @@ export default function FinalNight() {
         {isAdmin && (
           <div style={{ marginTop: 40, display: 'flex', gap: 8, justifyContent: 'center' }}>
             {!state.event_id && (
-              <select value={pick} onChange={e => setPick(e.target.value)} style={{ padding: 10, borderRadius: 8 }}>
+              <select value={pick} onChange={e => setPick(e.target.value)} style={{ padding: 10, borderRadius: 2 }}>
                 <option value="">Scegli la cena…</option>
                 {events.map(e => <option key={e.id} value={e.id}>{e.title || e.id}</option>)}
               </select>
             )}
             <button onClick={next} disabled={!state.event_id && !pick || step >= 7}
-              style={{ padding: '10px 22px', borderRadius: 8, border: 0, background: '#00D4AA', fontWeight: 700, cursor: 'pointer' }}>
+              style={{ padding: '10px 22px', borderRadius: 2, border: 0, background: '#ffe7c3', color: '#38302b', fontFamily: '"Cinzel", serif', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500, cursor: 'pointer' }}>
               Avanti ({step}/7)
             </button>
           </div>
@@ -132,11 +132,11 @@ export default function FinalNight() {
 function Row({ label, value, highlight, extra }) {
   return (
     <div style={{
-      margin: '12px 0', padding: '14px 20px', borderRadius: 12, display: 'flex', justifyContent: 'space-between',
+      margin: '12px 0', padding: '14px 20px', borderRadius: 2, display: 'flex', justifyContent: 'space-between',
       textTransform: 'capitalize', fontSize: 20, animation: highlight ? 'glow 1.4s infinite' : 'fadeUp .5s',
-      background: highlight ? 'rgba(255,200,61,.15)' : '#12161d', border: `1px solid ${highlight ? '#ffc83d' : '#2a303b'}`,
+      background: highlight ? 'rgba(201,165,102,.18)' : '#463a32', border: `1px solid ${highlight ? '#c9a566' : '#6b5a47'}`,
     }}>
-      <span>{label}{extra && <b style={{ marginLeft: 10, color: '#ffc83d' }}>{extra}</b>}</span>
+      <span>{label}{extra && <b style={{ marginLeft: 10, color: '#c9a566' }}>{extra}</b>}</span>
       <b>{value}</b>
     </div>
   )
