@@ -14,7 +14,10 @@ export default function SecretBonus() {
   const [busy, setBusy] = useState(false)
 
   useEffect(() => {
-    supabase.rpc('has_secret_bonus', { p_event: eventId }).then(({ data }) => setLocked(!!data))
+    supabase.rpc('has_secret_bonus', { p_event: eventId }).then(({ data, error }) => {
+      if (error) setError(error.message.includes('permission denied') ? 'Devi accedere per scegliere il bonus.' : error.message)
+      else setLocked(!!data)
+    })
   }, [eventId])
 
   async function confirm() {
@@ -35,7 +38,8 @@ export default function SecretBonus() {
           e, una volta confermata, non si può più cambiare.
         </p>
 
-        {locked === null && <p>Caricamento…</p>}
+        {locked === null && !error && <p>Caricamento…</p>}
+        {error && locked === null && <p><a href={`/accesso?next=/bonus/${eventId}`} style={{ color: '#00D4AA' }}>Accedi →</a></p>}
         {locked && (
           <div style={{ padding: 20, borderRadius: 12, border: '1px solid #00D4AA', background: 'rgba(0,212,170,.08)' }}>
             🔒 Scelta registrata e congelata. Sarà svelata alla Final Night.

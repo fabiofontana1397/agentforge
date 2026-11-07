@@ -8,11 +8,17 @@ import Admin from './pages/Admin'
 import Chat from './pages/Chat'
 import SecretBonus from './pages/SecretBonus'
 import FinalNight from './pages/FinalNight'
+import Campionato from './pages/Campionato'
+import Cena from './pages/Cena'
+import Accesso from './pages/Accesso'
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Landing />} />
+      <Route path="/" element={<Campionato />} />
+      <Route path="/accesso" element={<Accesso />} />
+      <Route path="/cena/:eventId" element={<Cena />} />
+      <Route path="/agentforge" element={<Landing />} />
       <Route path="/payment" element={<Payment />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/welcome" element={<Welcome />} />
